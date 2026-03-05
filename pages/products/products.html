@@ -1,29 +1,78 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="products.js" defer></script>
-    <link rel="stylesheet" href="products.css">
-    <title>Catalog</title>
-</head>
-<body>
-    <nav>
-        <!-- wishlists and cart -->
-    </nav>
-    <div class="title">
-        <h1>Title</h1>
-        <img height="150" src="../../assets/general/logo.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ldfjds</title>
+    <script type="module" src="products.js"></script>
+  </head>
+  <body>
+    <header>
+      <a href="products.html">
+        <img src="../../assets/general/logo.jpeg" alt="shop logo">
+        <span>Green Shopopop</span>
+      </a>
+      <nav>
+        <a href="../wishlist/wishlist.html">
+          Wishlist (<span id="wl-count">0</span>)
+        </a>
+
+        <a href="../cart/cart.html">
+          Cart (<span id="cart-count">0</span>)
+        </a>
+      </nav>
+    </header>
+
+    <div class="layout">
+
+      <aside>
+        <label for="search-input">Search</label>
+        <input type="text" id="search-input" placeholder="e.g bag of holding, potion of invisibility">
+
+        <fieldset>
+          <legend>Price (GP)</legend>
+          <input type="number" id="price-min" placeholder="Min">
+          <input type="number" id="price-max" placeholder="Max">
+        </fieldset>
+
+        <fieldset>
+          <legend>Rarity</legend>
+          <label><input type="checkbox" name="rarity" value="Common"> Common</label>
+          <label><input type="checkbox" name="rarity" value="Uncommon"> Uncommon</label>
+          <label><input type="checkbox" name="rarity" value="Rare"> Rare</label>
+          <label><input type="checkbox" name="rarity" value="Very Rare"> Very Rare</label>
+          <label><input type="checkbox" name="rarity" value="Legendary"> Legendary</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Category</legend>
+          <label><input type="checkbox" name="category" value="Armor"> Armor</label>
+          <label><input type="checkbox" name="category" value="Weapon"> Weapon</label>
+          <label><input type="checkbox" name="category" value="Tool"> Tool</label>
+          <label><input type="checkbox" name="category" value="Instrument"> Instrument</label>
+          <label><input type="checkbox" name="category" value="Potion"> Potion</label>
+          <label><input type="checkbox" name="category" value="Scroll"> Scroll</label>
+          <label><input type="checkbox" name="category" value="Wondrous Item"> Wondrous Item</label>
+        </fieldset>
+
+        <label for="sort-select">Sort By</label>
+        <select id="sort-select">
+          <option value="name-asc">Name: A to Z</option>
+          <option value="name-desc">Name: Z to A</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="rarity-asc">Rarity: Common First</option>
+          <option value="rarity-desc">Rarity: Legendary First</option>
+        </select>
+        <button id="reset-btn">Reset Filters</button>
+      </aside>
+
+      <main>
+          <p id="item-count">Loading...</p>
+          <div id="grid">
+            <!-- JS will put cards here -->
+          </div>
+      </main>
     </div>
-    
-    <div class="search">
-        <!-- search bar, filtering based on price, rarity, category, order by descending or ascending. by default it will be random -->
-    </div>
-    
-    <div class="product-listings">
-        <!-- list of products in a grid, 20 in one page, and at the bottom there will be a next page or select page buttons -->
-    </div>
-    
-    
-</body>
+  </body>
 </html>
