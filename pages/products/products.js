@@ -15,7 +15,7 @@ async function fetchItem(ref){
 
   const priceGP = ref.type === "equipment" ? (costToGP(data.cost) ?? generatePrice(ref.index, "Common", ref.category)) : generatePrice(ref.index, rarity, ref.category);
 
-  const desc = Array.IsArray(data.desc) ? data.desc.join("\n\n") : (data.desc || "");
+  const desc = Array.isArray(data.desc) ? data.desc.join("\n\n") : (data.desc || "");
 
   return{
     index: ref.index,
@@ -41,16 +41,26 @@ async function loadAllItems(){
 
 function renderCard(item){
   const categoryFolder = item.category.toLowerCase().replace(" ", "-");
-  const imgSrc = `../../assets/${category}`
+  const imgSrc = `../../assets/items/${item.category}/${item.index}.jpeg`
 
   const detailURL = `../product/product.html?type+${item.type}&index=${item.index}`;
 
   return `
   <div class="product_card">
-    <a href="${detailURL}">
-
-      <img src="${imgSrc}" alt="${item.name}">
-    </a>
+    <div style="width:auto; height:200px; overflow:hidden; background:#f5f5f5; position:relative;">
+      <a href="${detailURL}">
+        <img 
+          src="${imgSrc}" 
+          alt="${item.name}"
+          onerror="this.src='../../assets/general/placeholder.png'"
+          style="width:100%; height:100%; object-fit:contain; padding:8px;"
+        >
+      </a>
+  <button 
+    class="wishlist-btn"
+    data-index="${item.index}"
+    onclick="handleWishlist(this)">♡</button>
+    </div>
 
     <div class="card-info">
 
@@ -63,20 +73,6 @@ function renderCard(item){
       <span class="card-price">${item.priceDisplay}</span>
     </div>
 
-    <div class="card-actions">
-      <div class="qty-control">
-        <button onclick="changeQty(this, -1)">-</button>
-        <input type="number" class="qty-input" value="1" min="1" max="99" readonly>
-        <button onclick="changeQty(this, 1)">+</button>
-      </div>
-
-      <button class="add-cart-btn" data-index="${item.index}" onclick="handleAddToCart(this)">
-        Add to Cart
-      </button>
-      <button class="wishlist-btn" data-index="${item.index}" onclick="handleWishlist(this)">heart</button>
-
-
-    </div>
 
     <div class="card-desc" style="display:none">
       <p>${item.desc || 'No description available.'}</p>
@@ -159,6 +155,74 @@ function applyFilters(){
   renderGrid(filtered);
 }
 
+// --- localStorage helpers ---
+// localStorage stores everything as strings, so we JSON.stringify when saving
+// and JSON.parse when reading
+
+function getCart() {
+  return JSON.parse(localStorage.getItem('cart') || '[]');
+}
+function saveCart(cart) {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+function getWishlist() {
+  return JSON.parse(localStorage.getItem('wishlist') || '[]');
+}
+function saveWishlist(wl) {
+  localStorage.setItem('wishlist', JSON.stringify(wl));
+}
+
+// Update the number badges in the header
+function updateHeaderCounts() {
+  const cart     = getCart();
+  const wishlist = getWishlist();
+  // Sum up quantities (someone might have added 3 of an item)
+  const cartTotal = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  document.getElementById('cart-count').textContent = cartTotal;
+  document.getElementById('wl-count').textContent   = wishlist.length;
+}
+
+// Called when clicking "Add to Cart"
+// 'btn' is the button element that was clicked
+// Called when clicking the heart ♡ button
+window.handleWishlist = function(btn) {
+  const index = btn.dataset.index;
+  const item  = allItems.find(i => i.index === index);
+  if (!item) return;
+
+  let wishlist = getWishlist();
+  const idx    = wishlist.findIndex(i => i.index === index);
+
+  if (idx >= 0) {
+    // Already in wishlist — remove it
+    wishlist.splice(idx, 1);
+    btn.textContent = '♡';
+  } else {
+    // Add it
+    wishlist.push({
+      index:        item.index,
+      name:         item.name,
+      type:         item.type,
+      category:     item.category,
+      rarity:       item.rarity,
+      priceGP:      item.priceGP,
+      priceDisplay: item.priceDisplay,
+    });
+    btn.textContent = '♥';
+  }
+
+  saveWishlist(wishlist);
+  updateHeaderCounts();
+};
+
+
+// Toggle the description block below the card
+window.toggleDesc = function(btn) {
+  const desc = btn.previousElementSibling; // the .card-desc div right above the button
+  const isOpen = desc.style.display !== 'none';
+  desc.style.display = isOpen ? 'none' : 'block';
+  btn.textContent    = isOpen ? '▾ Description' : '▴ Description';
+};
 
 document.querySelector("#search-input").addEventListener("input", applyFilters);
 document.querySelector("#price-min").addEventListener("input", applyFilters);
@@ -174,7 +238,7 @@ document.querySelectorAll("input[name='category']").forEach(element => {
   element.addEventListener("change", applyFilters);
 });
 
-document.querySelector("#reset-btn").addEventListener("click" () => {
+document.querySelector("#reset-btn").addEventListener("click", () => {
   document.querySelector("#search-input").value = "";
   document.querySelector("#price-min").value = "";
   document.querySelector("#price-max").value = "";
@@ -192,12 +256,28 @@ document.querySelector("#reset-btn").addEventListener("click" () => {
   try {
     allItems = await loadAllItems();
     renderGrid(allItems);
-    // #updateHeaderCounts();
+    updateHeaderCounts();
+    // Mark wishlist items with filled hearts
+    const wishlist = getWishlist();
+    wishlist.forEach(wlItem => {
+      const btn = document.querySelector(`.wishlist-btn[data-index="${wlItem.index}"]`);
+      if (btn) btn.textContent = '♥';
+    });
 
   }
   catch(error){
-    console.error('Failed to load items: ' error);
+    console.error('Failed to load items:', error);
+    document.getElementById('item-count').textContent = 'Failed to load. Check your connection.';
   }
 })();
 
 
+// Add this near your other window functions
+window.toggleAdvanced = function() {
+  const panel = document.getElementById('advanced-panel');
+  const btn   = document.getElementById('advanced-btn');
+  const isOpen = panel.style.display !== 'none';
+
+  panel.style.display = isOpen ? 'none' : 'block';
+  btn.textContent     = isOpen ? 'Advanced ▾' : 'Advanced ▴'; // arrow flips
+};

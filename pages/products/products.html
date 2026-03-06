@@ -24,48 +24,89 @@
     </header>
 
     <div class="layout">
+<!-- Search bar + Advanced button, sitting above the grid -->
+<div style="display:flex; gap:8px; margin-bottom: 16px; align-items:center;">
+  <input 
+    type="text" 
+    id="search-input" 
+    placeholder="Search..." 
+    style="flex:1; padding:10px 16px; font-size:15px; border:1px solid #ddd; outline:none;"
+  >
+  <button style="padding:10px 18px; background:#4a0080; color:white; border:none; cursor:pointer; font-size:15px;">
+    Search
+  </button>
+  <button 
+    id="advanced-btn"
+    onclick="toggleAdvanced()"
+    style="padding:10px 18px; background:#111; color:white; border:none; cursor:pointer; font-size:14px;"
+  >
+    Advanced ▾
+  </button>
+</div>
 
-      <aside>
-        <label for="search-input">Search</label>
-        <input type="text" id="search-input" placeholder="e.g bag of holding, potion of invisibility">
+<!-- The collapsible filter panel — hidden by default -->
+<div id="advanced-panel" style="display:none; border:1px solid #ddd; padding:16px; margin-bottom:16px; background:#fafafa;">
 
-        <fieldset>
-          <legend>Price (GP)</legend>
-          <input type="number" id="price-min" placeholder="Min">
-          <input type="number" id="price-max" placeholder="Max">
-        </fieldset>
+  <div style="display:flex; flex-wrap:wrap; gap:24px;">
 
-        <fieldset>
-          <legend>Rarity</legend>
-          <label><input type="checkbox" name="rarity" value="Common"> Common</label>
-          <label><input type="checkbox" name="rarity" value="Uncommon"> Uncommon</label>
-          <label><input type="checkbox" name="rarity" value="Rare"> Rare</label>
-          <label><input type="checkbox" name="rarity" value="Very Rare"> Very Rare</label>
-          <label><input type="checkbox" name="rarity" value="Legendary"> Legendary</label>
-        </fieldset>
+    <!-- Price -->
+    <div>
+      <strong>Price (GP)</strong><br>
+      <input type="number" id="price-min" placeholder="Min" style="width:90px; padding:6px; margin-top:6px;">
+      <input type="number" id="price-max" placeholder="Max" style="width:90px; padding:6px; margin-left:4px;">
+    </div>
 
-        <fieldset>
-          <legend>Category</legend>
-          <label><input type="checkbox" name="category" value="Armor"> Armor</label>
-          <label><input type="checkbox" name="category" value="Weapon"> Weapon</label>
-          <label><input type="checkbox" name="category" value="Tool"> Tool</label>
-          <label><input type="checkbox" name="category" value="Instrument"> Instrument</label>
-          <label><input type="checkbox" name="category" value="Potion"> Potion</label>
-          <label><input type="checkbox" name="category" value="Scroll"> Scroll</label>
-          <label><input type="checkbox" name="category" value="Wondrous Item"> Wondrous Item</label>
-        </fieldset>
+    <!-- Rarity -->
+    <div>
+      <strong>Rarity</strong><br>
+      <div style="margin-top:6px; display:flex; flex-direction:column; gap:4px;">
+        <label><input type="checkbox" name="rarity" value="Common">   Common</label>
+        <label><input type="checkbox" name="rarity" value="Uncommon"> Uncommon</label>
+        <label><input type="checkbox" name="rarity" value="Rare">     Rare</label>
+        <label><input type="checkbox" name="rarity" value="Very Rare">Very Rare</label>
+        <label><input type="checkbox" name="rarity" value="Legendary">Legendary</label>
+      </div>
+    </div>
 
-        <label for="sort-select">Sort By</label>
-        <select id="sort-select">
-          <option value="name-asc">Name: A to Z</option>
-          <option value="name-desc">Name: Z to A</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-          <option value="rarity-asc">Rarity: Common First</option>
-          <option value="rarity-desc">Rarity: Legendary First</option>
-        </select>
-        <button id="reset-btn">Reset Filters</button>
-      </aside>
+    <!-- Category -->
+    <div>
+      <strong>Category</strong><br>
+      <div style="margin-top:6px; display:flex; flex-direction:column; gap:4px;">
+        <label><input type="checkbox" name="category" value="Armor">        Armor</label>
+        <label><input type="checkbox" name="category" value="Weapon">       Weapon</label>
+        <label><input type="checkbox" name="category" value="Tool">         Tool</label>
+        <label><input type="checkbox" name="category" value="Instrument">   Instrument</label>
+        <label><input type="checkbox" name="category" value="Potion">       Potion</label>
+        <label><input type="checkbox" name="category" value="Scroll">       Scroll</label>
+        <label><input type="checkbox" name="category" value="Wondrous Item">Wondrous Item</label>
+      </div>
+    </div>
+
+    <!-- Sort -->
+    <div>
+      <strong>Sort By</strong><br>
+      <select id="sort-select" style="margin-top:6px; padding:6px;">
+        <option value="name-asc">Name: A → Z</option>
+        <option value="name-desc">Name: Z → A</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="rarity-asc">Rarity: Common First</option>
+        <option value="rarity-desc">Rarity: Legendary First</option>
+      </select>
+    </div>
+
+  </div>
+
+  <button id="reset-btn" style="margin-top:16px; padding:8px 16px; cursor:pointer;">
+    Reset Filters
+  </button>
+
+</div>
+
+<!-- Item count + grid below -->
+<p id="item-count">Loading…</p>
+<div id="grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:16px;">
+</div>
 
       <main>
           <p id="item-count">Loading...</p>
