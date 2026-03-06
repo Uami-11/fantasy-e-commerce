@@ -158,3 +158,46 @@ function applyFilters(){
 
   renderGrid(filtered);
 }
+
+
+document.querySelector("#search-input").addEventListener("input", applyFilters);
+document.querySelector("#price-min").addEventListener("input", applyFilters);
+document.querySelector("#price-max").addEventListener("input", applyFilters);
+document.querySelector("#sort-select").addEventListener("change", applyFilters);
+
+
+document.querySelectorAll("input[name='rarity']").forEach(element => {
+  element.addEventListener("change", applyFilters);
+});
+
+document.querySelectorAll("input[name='category']").forEach(element => {
+  element.addEventListener("change", applyFilters);
+});
+
+document.querySelector("#reset-btn").addEventListener("click" () => {
+  document.querySelector("#search-input").value = "";
+  document.querySelector("#price-min").value = "";
+  document.querySelector("#price-max").value = "";
+  document.querySelector("#sort-select").value = "name-asc";
+
+  document.querySelectorAll("input[name='rarity']").foreach(element => element.checeked = false);
+  document.querySelectorAll("input[name='category']").foreach(element => element.checeked = false);
+  
+  applyFilters();
+  
+});
+
+
+(async function init() {
+  try {
+    allItems = await loadAllItems();
+    renderGrid(allItems);
+    // #updateHeaderCounts();
+
+  }
+  catch(error){
+    console.error('Failed to load items: ' error);
+  }
+})();
+
+
