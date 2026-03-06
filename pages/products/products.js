@@ -43,7 +43,7 @@ function renderCard(item){
   const categoryFolder = item.category.toLowerCase().replace(" ", "-");
   const imgSrc = `../../assets/items/${item.category}/${item.index}.jpeg`
 
-  const detailURL = `../product/product.html?type+${item.type}&index=${item.index}`;
+  const detailURL = `../product/product.html?type=${item.type}&index=${item.index}`;
 
   return `
   <div class="product_card">
