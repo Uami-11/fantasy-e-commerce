@@ -1,16 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="wishlist.js" defer></script>
-    <link rel="stylesheet" href="wishlist.css">
-    <title>Your Wishlist</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishlist — The Arcane Emporium</title>
+  <link rel="stylesheet" href="../../style/styles.css">
+  <link rel="stylesheet" href="wishlist.css">
 </head>
 <body>
-    <div class="wishlist">
-        <!-- list of items in wishlist, and ability to select individual items to add to cart-->
+
+  <header>
+    <a href="../products/products.html" class="brand">
+      <img src="../../assets/general/logo.png" alt="logo">
+      <span>The Arcane Emporium</span>
+    </a>
+    <nav>
+      <a href="wishlist.html" class="nav-active">Wishlist (<span id="wl-count">0</span>)</a>
+      <a href="../cart/cart.html">Cart (<span id="cart-count">0</span>)</a>
+    </nav>
+  </header>
+
+  <main class="wishlist-page">
+
+    <h1 class="page-title">Your Wishlist</h1>
+
+    <!-- Shown when wishlist is empty -->
+    <div id="wl-empty" class="empty-state">
+      <p>Your wishlist is empty.</p>
+      <a href="../products/products.html" class="btn-browse">Browse the Shop</a>
     </div>
-    <button>Add to cart</button>
+
+    <!-- Shown when wishlist has items -->
+    <div id="wl-content" class="wl-content">
+
+      <!-- Toolbar: select controls + bulk action -->
+      <div class="wl-toolbar">
+        <div class="wl-select-controls">
+          <button id="btn-select-all"   class="btn-select">Select All</button>
+          <button id="btn-deselect-all" class="btn-select">Deselect All</button>
+          <span id="wl-selected-count" class="selected-count">0 selected</span>
+        </div>
+        <button id="btn-add-selected" class="btn-add-selected">
+          Add Selected to Cart
+        </button>
+      </div>
+
+      <!-- Table -->
+      <div class="wl-table-wrap">
+        <table class="wl-table">
+          <thead>
+            <tr>
+              <th class="col-check">
+                <!-- Master checkbox: checks/unchecks all rows -->
+                <input type="checkbox" id="master-check" class="row-check">
+              </th>
+              <th class="col-item">Item</th>
+              <th class="col-price">Price</th>
+              <th class="col-rarity">Rarity</th>
+              <th class="col-remove"></th>
+            </tr>
+          </thead>
+          <tbody id="wl-body">
+            <!-- Rows injected by JS -->
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script type="module" src="wishlist.js"></script>
 </body>
 </html>

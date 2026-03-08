@@ -1,9 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Green</title>
+  <title>Item — The Arcane Emporium</title>
   <link rel="stylesheet" href="../../style/styles.css">
   <link rel="stylesheet" href="product.css">
 </head>
@@ -11,41 +11,41 @@
 
   <header>
     <a href="../products/products.html" class="brand">
-      <img src="../../assets/general/logo.d" alt="logo">
-      <span>Green</span>
+      <img src="../../assets/general/logo.png" alt="logo">
+      <span>The Arcane Emporium</span>
     </a>
     <nav>
-      <a href="../wishlist/wishlist.html">wishlist (<span id="wl-count">0</span>)</a>
-      <a href="../cart/cart.html">cart (<span id="cart-count">0</span>)</a>
+      <a href="../wishlist/wishlist.html">Wishlist (<span id="wl-count">0</span>)</a>
+      <a href="../cart/cart.html">Cart (<span id="cart-count">0</span>)</a>
     </nav>
   </header>
 
   <main class="detail-page">
 
-    <a href="../products/products.html" class="back-link">← back to shop</a>
+    <a href="../products/products.html" class="back-link">← Back to Shop</a>
 
-    <!-- loading state -->
+    <!-- Loading state -->
     <div id="loading-state" class="state-loading">
-      loading item…
+      Loading item…
     </div>
 
-    <!-- error state -->
+    <!-- Error state -->
     <div id="error-state" class="state-error">
-      <p>item not found.</p>
-      <a href="../products/products.html">return to shop</a>
+      <p>Item not found.</p>
+      <a href="../products/products.html">Return to shop</a>
     </div>
 
-    <!-- ═══ card 1: image + info ═══════════════════════════════ -->
+    <!-- ═══ CARD 1: Image + Info ═══════════════════════════════ -->
     <div id="detail-content" class="detail-content">
 
       <div class="detail-top-card">
 
-        <!-- left: image -->
+        <!-- LEFT: Image -->
         <div class="detail-img-box">
           <img id="detail-img" src="" alt="" onerror="this.src='../../assets/general/placeholder.png'">
         </div>
 
-        <!-- right: info -->
+        <!-- RIGHT: Info -->
         <div class="detail-info">
 
           <h1 id="detail-name" class="detail-name"></h1>
@@ -63,19 +63,19 @@
           <hr class="divider">
 
           <div class="quantity-row">
-            <span class="quantity-label">quantity</span>
+            <span class="quantity-label">Quantity</span>
             <div class="qty-control">
-              <button onclick="changeqty(-1)">−</button>
+              <button onclick="changeQty(-1)">−</button>
               <input type="number" id="qty-input" value="1" min="1" max="99" readonly>
-              <button onclick="changeqty(1)">+</button>
+              <button onclick="changeQty(1)">+</button>
             </div>
           </div>
 
           <div class="action-row">
-            <button id="add-cart-btn" class="btn-add-cart" onclick="handleaddtocart()">
-              add to cart
+            <button id="add-cart-btn" class="btn-add-cart" onclick="handleAddToCart()">
+              Add to Cart
             </button>
-            <button id="wishlist-btn" class="btn-wishlist" onclick="handlewishlist()" title="add to wishlist">
+            <button id="wishlist-btn" class="btn-wishlist" onclick="handleWishlist()" title="Add to wishlist">
               ♡
             </button>
           </div>
@@ -83,9 +83,9 @@
         </div>
       </div>
 
-      <!-- ═══ card 2: description ═════════════════════════════ -->
+      <!-- ═══ CARD 2: Description ═════════════════════════════ -->
       <div class="detail-desc-card">
-        <h2 class="desc-heading">description</h2>
+        <h2 class="desc-heading">Description</h2>
         <div id="detail-desc" class="desc-body"></div>
       </div>
 
@@ -93,6 +93,6 @@
 
   </main>
 
-  <script type="module" src="productdetails.js"></script>
+  <script type="module" src="productDetails.js"></script>
 </body>
 </html>

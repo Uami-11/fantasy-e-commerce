@@ -71,6 +71,7 @@ function displayItem(item) {
   const img    = document.getElementById('detail-img');
   const folder = item.category.toLowerCase().replace(' ', '-');
   img.src      = `../../assets/items/${folder}/${item.index}.jpeg`;
+  console.log(img.src);
   img.alt      = item.name;
 
   // Description — render each string in the array as a bullet point
