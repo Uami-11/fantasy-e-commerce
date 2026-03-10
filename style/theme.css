@@ -1,13 +1,3 @@
-/* ================================================================
-   theme.css — Light mode (Goblin) + dark mode toggle button
-   Add this file AFTER styles.css in every HTML page:
-   <link rel="stylesheet" href="../../style/theme.css">
-   ================================================================ */
-
-/* ── Light mode variable overrides ──────────────────────────── */
-/* When <body> has the class "light", these values replace the
-   dark-mode defaults defined in styles.css                      */
-
 body.light {
   --bg:            #e6d5c0;
   --bg-surface:    #d9c4a8;
@@ -35,7 +25,6 @@ body.light {
   --rarity-legendary: #dba40e;
 }
 
-/* ── Specific element overrides for light mode ───────────────── */
 /* Some elements need more than just colour variable changes      */
 
 body.light {
@@ -358,7 +347,7 @@ body.light .btn-remove:hover { color: #c0392b; }
 /* Item count text */
 body.light #item-count { color: #72471f; }
 
-/* ── Theme toggle button ─────────────────────────────────────── */
+/* Theme toggle */
 #theme-toggle {
   position: fixed;
   bottom: 1.5rem;

@@ -1,14 +1,10 @@
-/* ================================================================
-   product.css — Single item detail page
-   ================================================================ */
-
 .detail-page {
   max-width: 1100px;
   margin: 0 auto;
   padding: 1.5rem;
 }
 
-/* ── Back link ───────────────────────────────────────────────── */
+/* Back link */
 .back-link {
   display: inline-block;
   margin-bottom: 1.25rem;
@@ -22,7 +18,7 @@
 
 .back-link:hover { color: var(--gold); }
 
-/* ── Loading / error states ──────────────────────────────────── */
+/* Loading */
 .state-loading {
   padding: 5rem 2rem;
   text-align: center;
@@ -47,10 +43,9 @@
   margin-bottom: 1rem;
 }
 
-/* ── Detail content ──────────────────────────────────────────── */
-.detail-content { display: none; }  /* shown by JS */
+.detail-content { display: none; } 
 
-/* ── Card 1: image + info ────────────────────────────────────── */
+/* Details of item */
 .detail-top-card {
   display: flex;
   gap: 2.5rem;
@@ -60,7 +55,6 @@
   margin-bottom: 1.25rem;
 }
 
-/* Image side */
 .detail-img-box {
   flex-shrink: 0;
   width: 360px;
@@ -83,7 +77,6 @@
 
 .detail-img-box:hover img { transform: scale(1.04); }
 
-/* Info side */
 .detail-info {
   flex: 1;
   display: flex;
@@ -101,7 +94,6 @@
   letter-spacing: 0.02em;
 }
 
-/* Category | Rarity row */
 .detail-meta {
   font-size: 0.9rem;
   color: var(--text-muted);
@@ -115,7 +107,6 @@
   font-weight: 300;
 }
 
-/* Price */
 .detail-price {
   font-family: 'Cinzel', serif;
   font-size: 1.65rem;
@@ -124,7 +115,6 @@
   text-shadow: 0 0 18px rgba(201, 162, 39, 0.25);
 }
 
-/* Quantity row */
 .quantity-row {
   display: flex;
   align-items: center;
@@ -140,7 +130,6 @@
   min-width: 68px;
 }
 
-/* Action buttons row */
 .action-row {
   display: flex;
   gap: 0.75rem;
@@ -192,7 +181,7 @@
   background: rgba(224, 82, 82, 0.1);
 }
 
-/* ── Card 2: description ─────────────────────────────────────── */
+/* Item Description */
 .detail-desc-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -225,7 +214,7 @@
 
 .desc-body li { color: var(--text-muted); }
 
-/* ── Responsive ──────────────────────────────────────────────── */
+/* Responsive Design */
 @media (max-width: 860px) {
   .detail-top-card {
     flex-direction: column;

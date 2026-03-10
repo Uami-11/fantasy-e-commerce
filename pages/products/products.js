@@ -236,3 +236,45 @@ document.querySelector("#reset-btn").addEventListener("click", () => {
     document.getElementById("item-count").textContent = "Failed to load. Check your connection.";
   }
 })();
+
+/* ── Keyboard shortcuts ───────────────────────────────────────
+   F         → focus search bar
+   Escape    → unfocus search bar
+   G         → toggle advanced panel
+   R         → reset filters (only while advanced panel is open)
+   ──────────────────────────────────────────────────────────── */
+
+document.addEventListener('keydown', (e) => {
+  const tag        = document.activeElement.tagName;
+  const inInput    = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+  const searchEl   = document.getElementById('search-input');
+  const panel      = document.getElementById('advanced-panel');
+  const panelOpen  = panel.style.display === 'block';
+
+  // F → focus the search bar (only when not already in an input)
+  if ((e.key === 'f' || e.key === 'F') && !inInput) {
+    e.preventDefault();
+    searchEl.focus();
+    return;
+  }
+
+  // Escape → unfocus the search bar if it's focused
+  if (e.key === 'Escape' && document.activeElement === searchEl) {
+    searchEl.blur();
+    return;
+  }
+
+  // G → toggle advanced panel (only when not typing)
+  if ((e.key === 'g' || e.key === 'G') && !inInput) {
+    e.preventDefault();
+    toggleAdvanced();
+    return;
+  }
+
+  // R → reset filters, but only while the advanced panel is visible
+  if ((e.key === 'r' || e.key === 'R') && !inInput && panelOpen) {
+    e.preventDefault();
+    document.getElementById('reset-btn').click();
+    return;
+  }
+});

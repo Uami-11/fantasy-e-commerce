@@ -1,7 +1,7 @@
 import { formatPrice } from '../../src/price.js';
 
-// ── localStorage helpers ───────────────────────────────────────
-function getCart()        { return JSON.parse(localStorage.getItem('cart')     || '[]'); }
+// Local Storage Functions
+function getCart()        { return JSON.parse(localStorage.getItem('cart') || '[]'); }
 function saveCart(c)      { localStorage.setItem('cart', JSON.stringify(c)); }
 function getWishlist()    { return JSON.parse(localStorage.getItem('wishlist') || '[]'); }
 
@@ -11,7 +11,7 @@ function updateHeaderCounts() {
   document.getElementById('wl-count').textContent   = getWishlist().length;
 }
 
-// ── Render ─────────────────────────────────────────────────────
+// Rendering items
 function render() {
   const cart    = getCart();
   const empty   = document.getElementById('cart-empty');
@@ -25,7 +25,7 @@ function render() {
     return;
   }
   empty.style.display   = 'none';
-  content.style.display = 'grid'; // 'grid' because your CSS will set this as a two-column layout
+  content.style.display = 'grid';
 
   // Build each row
   tbody.innerHTML = cart.map(item => {
@@ -88,7 +88,7 @@ function render() {
   document.getElementById('summary-total').textContent = formatPrice(totalGP);
 }
 
-// ── Quantity change ────────────────────────────────────────────
+// Quantity Change
 window.changeQty = function(index, delta) {
   const cart = getCart();
   const item = cart.find(i => i.index === index);
@@ -100,7 +100,7 @@ window.changeQty = function(index, delta) {
   render();
 };
 
-// ── Remove item ────────────────────────────────────────────────
+// Remove item
 window.removeItem = function(index) {
   const cart = getCart().filter(i => i.index !== index);
   saveCart(cart);
@@ -108,7 +108,7 @@ window.removeItem = function(index) {
   render();
 };
 
-// ── Checkout flow ──────────────────────────────────────────────
+// Checkout
 document.getElementById('checkout-btn').addEventListener('click', () => {
   const cart     = getCart();
   const totalGP  = cart.reduce((s, i) => s + i.priceGP * (i.quantity || 1), 0);
@@ -139,6 +139,39 @@ document.getElementById('checkout-modal').addEventListener('click', function(e) 
   if (e.target === this) this.style.display = 'none';
 });
 
-// ── Init ───────────────────────────────────────────────────────
+
 updateHeaderCounts();
 render();
+
+
+// Keyboard shortcuts
+
+document.addEventListener('keydown', (e) => {
+  const tag     = document.activeElement.tagName;
+  const inInput = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+  if (inInput) return;
+
+  const checkoutModal = document.getElementById('checkout-modal');
+  const successModal  = document.getElementById('success-modal');
+  const modalOpen     = checkoutModal.style.display === 'flex';
+  const successOpen   = successModal.style.display  === 'flex';
+
+  if (e.key === 'Enter') {
+    e.preventDefault();
+
+    if (modalOpen) {
+      document.getElementById('btn-confirm').click();
+    } else if (!successOpen) {
+      document.getElementById('checkout-btn').click();
+    }
+    return;
+  }
+
+  if (e.key === 'Escape') {
+    if (modalOpen) {
+      e.preventDefault();
+      document.getElementById('btn-cancel').click();
+    }
+    return;
+  }
+});

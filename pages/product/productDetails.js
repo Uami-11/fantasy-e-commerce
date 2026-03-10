@@ -3,13 +3,13 @@ import { generatePrice, formatPrice, costToGP } from '../../src/price.js';
 
 const API_BASE = 'https://www.dnd5eapi.co/api/2014';
 
-// ── Read the URL ───────────────────────────────────────────────
+// Reading the url
 // URL looks like: product.html?type=magic-items&index=bag-of-holding
 const params = new URLSearchParams(window.location.search);
 const type   = params.get('type');
 const index  = params.get('index');
 
-// ── localStorage helpers ───────────────────────────────────────
+// localStorage functions
 function getCart()        { return JSON.parse(localStorage.getItem('cart')     || '[]'); }
 function saveCart(c)      { localStorage.setItem('cart', JSON.stringify(c)); }
 function getWishlist()    { return JSON.parse(localStorage.getItem('wishlist') || '[]'); }
@@ -21,7 +21,7 @@ function updateHeaderCounts() {
   document.getElementById('wl-count').textContent   = getWishlist().length;
 }
 
-// ── Fetch and display ──────────────────────────────────────────
+// loading item details
 async function loadItem() {
   if (!type || !index) { showError(); return; }
 
@@ -45,12 +45,12 @@ async function loadItem() {
       rarity,
       priceGP,
       priceDisplay: formatPrice(priceGP),
-      // desc from the API is an array — keep it as-is so we can render each line
+      // desc from the API is an array
       descLines:    Array.isArray(data.desc) ? data.desc : (data.desc ? [data.desc] : []),
     };
 
     displayItem(item);
-    window.__currentItem = item; // store so button handlers can reach it
+    window.__currentItem = item;
 
   } catch (err) {
     console.error(err);
@@ -61,33 +61,30 @@ async function loadItem() {
 function displayItem(item) {
   document.title = `${item.name} — Green's Shop`;
 
-  // Fill in the simple text fields
   document.getElementById('detail-name').textContent     = item.name;
   document.getElementById('detail-category').textContent = item.category;
   document.getElementById('detail-rarity').textContent   = item.rarity;
   document.getElementById('detail-price').textContent    = item.priceDisplay;
 
-  // Set image
   const img    = document.getElementById('detail-img');
   const folder = item.category.toLowerCase().replace(' ', '-');
-  img.src      = `../../assets/items/${folder}/${item.index}.jpeg`;
+  img.src = `../../assets/items/${folder}/${item.index}.jpeg`;
   console.log(img.src);
-  img.alt      = item.name;
+  img.alt = item.name;
 
   // Description — render each string in the array as a bullet point
   const descEl = document.getElementById('detail-desc');
   if (item.descLines.length === 0) {
     descEl.textContent = 'No description available.';
   } else {
-    // Build a <ul> where each array entry is a <li>
     const ul = document.createElement('ul');
     ul.style.paddingLeft = '20px';
-    ul.style.display     = 'flex';
+    ul.style.display = 'flex';
     ul.style.flexDirection = 'column';
-    ul.style.gap         = '8px';
+    ul.style.gap = '8px';
 
     item.descLines.forEach(line => {
-      const li       = document.createElement('li');
+      const li = document.createElement('li');
       li.textContent = line;
       ul.appendChild(li);
     });
@@ -109,7 +106,7 @@ function showError() {
   document.getElementById('error-state').style.display   = 'block';
 }
 
-// ── Button handlers ────────────────────────────────────────────
+// Buttons
 window.changeQty = function(delta) {
   const input = document.getElementById('qty-input');
   input.value = Math.max(1, Math.min(99, parseInt(input.value) + delta));
@@ -170,6 +167,39 @@ window.handleWishlist = function() {
   updateHeaderCounts();
 };
 
-// ── Run ────────────────────────────────────────────────────────
 updateHeaderCounts();
 loadItem();
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  const tag     = document.activeElement.tagName;
+  const inInput = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+
+  // + or = → increase qty (= is the unshifted + key)
+  if ((e.key === '+' || e.key === '=') && !inInput) {
+    e.preventDefault();
+    changeQty(1);
+    return;
+  }
+
+  // - → decrease qty
+  if (e.key === '-' && !inInput) {
+    e.preventDefault();
+    changeQty(-1);
+    return;
+  }
+
+  // Alt + C → add to cart
+  if (e.altKey && (e.key === 'c' || e.key === 'C')) {
+    e.preventDefault();
+    handleAddToCart();
+    return;
+  }
+
+  // Alt + W → toggle wishlist
+  if (e.altKey && (e.key === 'w' || e.key === 'W')) {
+    e.preventDefault();
+    handleWishlist();
+    return;
+  }
+});

@@ -1,11 +1,6 @@
-/* ================================================================
-   styles.css — Global shared styles
-   The Arcane Emporium
-   ================================================================ */
-
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
 
-/* ── Variables ───────────────────────────────────────────────── */
+/* Varialbes */
 :root {
   --bg:            #0e0c14;
   --bg-surface:    #16121f;
@@ -36,7 +31,7 @@
   --transition:    0.2s ease;
 }
 
-/* ── Reset ───────────────────────────────────────────────────── */
+/* Reset */
 *,
 *::before,
 *::after {
@@ -62,12 +57,11 @@ button  { cursor: pointer; font-family: inherit; }
 input,
 select  { font-family: inherit; }
 
-/* ── Scrollbar ───────────────────────────────────────────────── */
+
 ::-webkit-scrollbar       { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border-gold); border-radius: 3px; }
 
-/* ── Header ──────────────────────────────────────────────────── */
 header {
   position: sticky;
   top: 0;
@@ -128,7 +122,6 @@ header nav a.nav-active {
   background: rgba(201, 162, 39, 0.06);
 }
 
-/* ── Page title ──────────────────────────────────────────────── */
 .page-title {
   font-family: 'Cinzel', serif;
   font-size: 1.4rem;
@@ -140,7 +133,6 @@ header nav a.nav-active {
   border-bottom: 1px solid var(--border-gold);
 }
 
-/* ── Quantity control ────────────────────────────────────────── */
 .qty-control {
   display: flex;
   align-items: center;
@@ -184,7 +176,6 @@ header nav a.nav-active {
   -webkit-appearance: none;
 }
 
-/* ── Buttons ─────────────────────────────────────────────────── */
 .btn-browse {
   display: inline-block;
   margin-top: 1rem;
@@ -215,7 +206,6 @@ header nav a.nav-active {
 
 .btn-remove:hover { color: var(--red); }
 
-/* ── Empty state ─────────────────────────────────────────────── */
 .empty-state {
   display: none;
   text-align: center;
@@ -230,7 +220,6 @@ header nav a.nav-active {
   margin-bottom: 0.5rem;
 }
 
-/* ── Modal ───────────────────────────────────────────────────── */
 .modal-overlay {
   display: none;
   position: fixed;
@@ -309,13 +298,11 @@ header nav a.nav-active {
   color: var(--text);
 }
 
-/* ── Divider ─────────────────────────────────────────────────── */
 .divider {
   border: none;
   border-top: 1px solid var(--border);
 }
 
-/* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 600px) {
   header       { padding: 0 1rem; }
   .brand span  { font-size: 0.85rem; }

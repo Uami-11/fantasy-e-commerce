@@ -1,6 +1,6 @@
 import { formatPrice } from '../../src/price.js';
 
-// ── localStorage helpers ───────────────────────────────────────
+// localStorage functions
 function getWishlist()    { return JSON.parse(localStorage.getItem('wishlist') || '[]'); }
 function saveWishlist(wl) { localStorage.setItem('wishlist', JSON.stringify(wl)); }
 function getCart()        { return JSON.parse(localStorage.getItem('cart')     || '[]'); }
@@ -12,8 +12,8 @@ function updateHeaderCounts() {
   document.getElementById('wl-count').textContent   = getWishlist().length;
 }
 
-// ── Selection helpers ──────────────────────────────────────────
-// Returns an array of index strings for every checked row
+// Selection function
+
 function getSelectedIndexes() {
   return [...document.querySelectorAll('.row-check:checked')]
     .map(cb => cb.dataset.index)
@@ -25,13 +25,12 @@ function updateSelectedCount() {
   document.getElementById('wl-selected-count').textContent =
     `${count} selected`;
 
-  // Keep master checkbox in sync
   const allBoxes = document.querySelectorAll('.row-check[data-index]');
   const master   = document.getElementById('master-check');
   master.checked = allBoxes.length > 0 && count === allBoxes.length;
 }
 
-// ── Render ─────────────────────────────────────────────────────
+// Redner
 function render() {
   const wl      = getWishlist();
   const empty   = document.getElementById('wl-empty');
@@ -92,7 +91,7 @@ function render() {
   updateSelectedCount();
 }
 
-// ── Select all / deselect all ──────────────────────────────────
+// Select and deselect
 document.getElementById('master-check').addEventListener('change', function() {
   document.querySelectorAll('.row-check[data-index]')
     .forEach(cb => cb.checked = this.checked);
@@ -111,7 +110,7 @@ document.getElementById('btn-deselect-all').addEventListener('click', () => {
   updateSelectedCount();
 });
 
-// ── Add selected to cart ───────────────────────────────────────
+// Adding to cart
 document.getElementById('btn-add-selected').addEventListener('click', () => {
   const selected = getSelectedIndexes();
   if (selected.length === 0) return;
@@ -123,7 +122,6 @@ document.getElementById('btn-add-selected').addEventListener('click', () => {
     const item = wl.find(i => i.index === index);
     if (!item) return;
 
-    // Add to cart — if it already exists just bump the quantity
     const existing = cart.find(c => c.index === index);
     if (existing) {
       existing.quantity = (existing.quantity || 1) + 1;
@@ -141,16 +139,41 @@ document.getElementById('btn-add-selected').addEventListener('click', () => {
   render();
 });
 
-// ── Remove single item ─────────────────────────────────────────
+// Removing a singel item
 window.removeFromWishlist = function(index) {
   saveWishlist(getWishlist().filter(i => i.index !== index));
   updateHeaderCounts();
   render();
 };
 
-// Make updateSelectedCount accessible to the inline onchange on the checkboxes
 window.updateSelectedCount = updateSelectedCount;
 
-// ── Init ───────────────────────────────────────────────────────
 updateHeaderCounts();
 render();
+
+
+// Keyboard shortcuts
+
+document.addEventListener('keydown', (e) => {
+  const tag     = document.activeElement.tagName;
+  const inInput = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+  if (inInput) return;
+
+  if (e.shiftKey && !e.ctrlKey && e.key === 'Enter') {
+    e.preventDefault();
+    document.getElementById('btn-select-all').click();
+    return;
+  }
+
+  if (e.ctrlKey && e.shiftKey && e.key === 'Enter') {
+    e.preventDefault();
+    document.getElementById('btn-add-selected').click();
+    return;
+  }
+
+  if (e.key === 'Delete') {
+    e.preventDefault();
+    document.getElementById('btn-deselect-all').click();
+    return;
+  }
+});
